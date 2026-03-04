@@ -1,0 +1,187 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    overflow-x: hidden;
+    background-color: #f4eade;
+    font-family: 'Georgia', serif;
+}
+
+/* Camada de Fundo da Página (Fica fixa lá atrás) */
+.page-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1; 
+}
+
+/* --- O AJUSTE DE CENTRALIZAÇÃO --- */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    /* Mágica Flexbox: Centraliza o envelope verticalmente na tela */
+    justify-content: center; 
+    min-height: 125vh; /* Ocupa toda a altura da janela */
+    
+    padding-bottom: 15vh; /* Respiro no final da página para o scroll da carta */
+    position: relative;
+}
+
+.logo {
+    position: absolute;
+    top: -24vh; 
+    left: 50%;
+    transform: translateX(-50%); 
+    
+    width: 80vw; 
+    /* Logo aumentada um pouco para acompanhar o envelope gigante */
+    max-width: 600px; 
+    
+    z-index: 0; 
+}
+
+.envelope-wrapper {
+    position: relative;
+    width: 90vw;
+    /* --- TAMANHO DOBRADO --- (Era 550px, agora 1100px) */
+    max-width: 1100px; 
+    cursor: pointer;
+    perspective: 1500px;
+}
+
+/* --- CAMADA 1: FUNDO DO ENVELOPE (TEXTURA INTERNA) --- */
+.envelope-back {
+    position: absolute;
+    top: 10.5%; 
+    left: 1.6%; 
+    width: 94%;
+    height: 75%;
+    
+    background-image: url('imagens/corpo_envelope_fundo.png'); 
+    background-size: cover; 
+    background-position: center; 
+    /* Aumentei a sombra para acompanhar a proporção do tamanho novo */
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.4); 
+    
+    z-index: 2;
+    border-radius: 10px;
+}
+
+/* --- CAMADA 2: A CARTA --- */
+.letter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    height: auto;
+    
+    transform: translate(-50%, -50%) scale(0.1);
+    opacity: 0; 
+    z-index: 5; 
+    
+    transition: transform 1.2s ease-in-out, opacity 0.5s ease 0.2s, z-index 0s ease 0.3s, width 1.2s ease-in-out, top 1.2s ease-in-out;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+}
+
+/* --- CAMADA 3: O CORPO DA FRENTE --- */
+.envelope-front {
+    position: relative; 
+    width: 121%; 
+    left: -9%; 
+    top: -3%; 
+    height: auto;
+    display: block;
+    z-index: 10;
+}
+
+/* --- CAMADA 4: A ABA DO ENVELOPE --- */
+.flap {
+    position: absolute;
+    top: 2.5%;
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: 11;
+    
+    /* --- EIXO RESPONSIVO --- 
+       Convertido para porcentagem (aprox. 10%) para a dobradiça não quebrar 
+       quando o envelope crescer para 1100px ou encolher no celular */
+    transform-origin: center 10%; 
+    
+    transition: transform 0.4s ease-in-out;
+}
+
+
+/* =========================================
+   ANIMAÇÕES DE ABERTURA (QUANDO CLICADO)
+   ========================================= */
+
+.envelope-wrapper.open .flap {
+    transform: rotateX(180deg);
+    z-index: 1; 
+}
+
+.envelope-wrapper.open .letter {
+    opacity: 1; 
+    z-index: 20; 
+    width: 95vw;
+    /* --- TAMANHO DA CARTA DOBRADO --- (Era 700px, agora 1400px) */
+    max-width: 1400px; 
+    
+    /* Como centralizamos o container, a carta precisa subir menos para não cortar o topo */
+    top: -10vh; 
+    transform: translate(-50%, 0) scale(1);
+}
+
+
+/* =========================================
+   INSTRUÇÃO DE CLIQUE
+   ========================================= */
+
+.instrucao {
+    margin-top: 30px;
+    color: #7a6a5f;
+    font-style: italic;
+    font-size: 1.2rem;
+    animation: pulsar 2s infinite;
+    transition: opacity 0.5s ease, visibility 0.5s ease; 
+}
+
+@keyframes pulsar {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+.envelope-wrapper.open + .instrucao {
+    opacity: 0; 
+    visibility: hidden; 
+    animation: none; 
+}
+
+
+/* =========================================
+   RESPONSIVIDADE (CELULARES)
+   ========================================= */
+
+@media (max-width: 600px) {
+    .container {
+        /* Garante que fique centralizado no celular também */
+        margin-top: 0; 
+        min-height: 100vh;
+    }
+
+    .envelope-wrapper.open .letter {
+        /* No celular a carta sobe um pouco mais para otimizar o espaço */
+        top: -15vh; 
+        width: 95vw;
+    }
+}
