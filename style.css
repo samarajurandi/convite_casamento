@@ -60,10 +60,10 @@ body {
 /* --- CAMADA 1: FUNDO DO ENVELOPE (TEXTURA INTERNA) --- */
 .envelope-back {
     position: absolute;
-    top: 10.5%; 
+    top: 11.5%; 
     left: 1.6%; 
     width: 94%;
-    height: 75%;
+    height: 74%;
     
     background-image: url('imagens/corpo_envelope_fundo.png'); 
     background-size: cover; 
@@ -105,9 +105,9 @@ body {
 /* --- CAMADA 4: A ABA DO ENVELOPE --- */
 .flap {
     position: absolute;
-    top: 2.5%;
+    top: 5.5%;
     left: 0;
-    width: 100%;
+    width: 97%;
     height: auto;
     z-index: 11;
     
@@ -177,6 +177,17 @@ body {
         /* Garante que fique centralizado no celular também */
         margin-top: 0; 
         min-height: 100vh;
+    }
+
+    /* --- NOVO: Ajuste da Logo --- */
+    .logo {
+        width: 50vw; /* Diminui o tamanho da logo no celular (o padrão era 80vw) */
+        top: -18vh; /* Desce ela um pouquinho para compensar o novo tamanho */
+    }
+
+    /* --- NOVO: Ajuste do Envelope --- */
+    .envelope-wrapper {
+        width: 96vw; /* Aumenta o envelope para ocupar quase 100% da tela do celular */
     }
 
     .envelope-wrapper.open .letter {
